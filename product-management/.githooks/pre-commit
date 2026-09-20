@@ -1,0 +1,8 @@
+#!/bin/sh
+# Fast local gate before every commit: typecheck + lint + unit tests.
+# The full gate (adds Playwright E2E) is `npm --prefix frontend run verify`; run it in CI.
+#
+# Activate once, after `git init` in this project:
+#   git config core.hooksPath .githooks
+set -e
+npm --prefix frontend run verify:fast

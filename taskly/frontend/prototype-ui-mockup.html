@@ -1,0 +1,505 @@
+<!-- PROTOTYPE — throwaway UI mockup for Taskly Phase 3. In-memory state only, no backend.
+     Purpose: review look + interaction before building the real React app. Do not ship. -->
+<title>Taskly — UI Mockup</title>
+<style>
+  :root {
+    --bg: #f3f4f9; --surface: #ffffff; --surface-2: #eef0f7;
+    --ink: #1a1d29; --muted: #5b6274; --faint: #8b91a3; --border: #e4e7f0;
+    --accent: #4f46e5; --accent-hover: #4338ca; --accent-soft: #e9e8fb; --on-accent: #ffffff;
+    --todo: #5a6577; --todo-soft: #eceff4;
+    --doing: #b45309; --doing-soft: #fbf0e0;
+    --done: #047857; --done-soft: #e1f3ea;
+    --danger: #dc2626; --danger-soft: #fbe9e9;
+    --ring: color-mix(in srgb, var(--accent) 45%, transparent);
+    --shadow-sm: 0 1px 2px rgba(20,28,48,.06);
+    --shadow: 0 4px 14px rgba(20,28,48,.09);
+    --r: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d0f15; --surface: #161923; --surface-2: #1d212c;
+      --ink: #e8eaf1; --muted: #a3aabe; --faint: #697088; --border: #262b38;
+      --accent: #817cf2; --accent-hover: #9591f5; --accent-soft: #211f38; --on-accent: #0d0f15;
+      --todo: #93a0b4; --todo-soft: #1b212c;
+      --doing: #e0983f; --doing-soft: #2a2013;
+      --done: #35d39a; --done-soft: #10271f;
+      --danger: #f47171; --danger-soft: #2a1616;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+      --shadow: 0 6px 20px rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f3f4f9; --surface: #ffffff; --surface-2: #eef0f7; --ink: #1a1d29; --muted: #5b6274;
+    --faint: #8b91a3; --border: #e4e7f0; --accent: #4f46e5; --accent-hover: #4338ca;
+    --accent-soft: #e9e8fb; --on-accent: #ffffff; --todo: #5a6577; --todo-soft: #eceff4;
+    --doing: #b45309; --doing-soft: #fbf0e0; --done: #047857; --done-soft: #e1f3ea;
+    --danger: #dc2626; --danger-soft: #fbe9e9;
+    --shadow-sm: 0 1px 2px rgba(20,28,48,.06); --shadow: 0 4px 14px rgba(20,28,48,.09);
+  }
+  :root[data-theme="dark"] {
+    --bg: #0d0f15; --surface: #161923; --surface-2: #1d212c; --ink: #e8eaf1; --muted: #a3aabe;
+    --faint: #697088; --border: #262b38; --accent: #817cf2; --accent-hover: #9591f5;
+    --accent-soft: #211f38; --on-accent: #0d0f15; --todo: #93a0b4; --todo-soft: #1b212c;
+    --doing: #e0983f; --doing-soft: #2a2013; --done: #35d39a; --done-soft: #10271f;
+    --danger: #f47171; --danger-soft: #2a1616;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4); --shadow: 0 6px 20px rgba(0,0,0,.45);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5; -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace; }
+  button { font: inherit; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 6px; }
+
+  .shell { max-width: 680px; margin: 0 auto; padding: 28px 20px 120px; }
+
+  /* Header */
+  .appbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+  .brand { display: flex; align-items: baseline; gap: 9px; }
+  .brand .logo {
+    font-size: 21px; font-weight: 700; letter-spacing: -.02em; color: var(--ink);
+  }
+  .brand .logo b { color: var(--accent); }
+  .brand .tag {
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint);
+  }
+  .userchip {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted);
+    background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+    padding: 5px 6px 5px 12px; box-shadow: var(--shadow-sm);
+  }
+  .userchip .avatar {
+    width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 700;
+  }
+  .userchip button {
+    border: none; background: transparent; color: var(--muted); padding: 4px; border-radius: 6px;
+    display: grid; place-items: center;
+  }
+  .userchip button:hover { color: var(--danger); background: var(--danger-soft); }
+
+  /* Add form */
+  .addform { display: flex; gap: 10px; margin-bottom: 18px; }
+  .addform input {
+    flex: 1; font-size: 15px; padding: 12px 14px; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+    box-shadow: var(--shadow-sm);
+  }
+  .addform input::placeholder { color: var(--faint); }
+  .addform input:focus-visible { outline-offset: 0; border-color: var(--accent); }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+    padding: 12px 18px; font-size: 15px; font-weight: 600;
+    color: var(--on-accent); background: var(--accent); border: none; border-radius: var(--r);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+
+  /* Filter tabs */
+  .filters { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .filters button {
+    font-size: 13px; font-weight: 500; padding: 7px 13px; border-radius: 999px;
+    color: var(--muted); background: transparent; border: 1px solid var(--border);
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .filters button:hover { color: var(--ink); border-color: var(--faint); }
+  .filters button[aria-pressed="true"] {
+    color: var(--accent); background: var(--accent-soft); border-color: transparent; font-weight: 600;
+  }
+  .filters .count {
+    font-size: 11px; min-width: 18px; text-align: center; padding: 0 5px; border-radius: 999px;
+    background: var(--surface-2); color: var(--faint); font-variant-numeric: tabular-nums;
+  }
+  .filters button[aria-pressed="true"] .count { background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--accent); }
+
+  /* Task list */
+  ul.tasks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .task {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+    box-shadow: var(--shadow-sm); transition: border-color .12s, transform .12s;
+  }
+  .task:hover { border-color: var(--faint); }
+  .task.done .title { color: var(--faint); text-decoration: line-through; }
+
+  /* Status chip = a cycling button; colour encodes state at a glance */
+  .status {
+    flex: none; display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600;
+    padding: 5px 11px 5px 9px; border-radius: 999px; border: 1px solid transparent; white-space: nowrap;
+  }
+  .status .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .status.todo  { color: var(--todo);  background: var(--todo-soft); }
+  .status.todo .dot { background: var(--todo); }
+  .status.doing { color: var(--doing); background: var(--doing-soft); }
+  .status.doing .dot { background: var(--doing); }
+  .status.done  { color: var(--done);  background: var(--done-soft); }
+  .status.done .dot { background: var(--done); }
+  .status:hover { border-color: currentColor; }
+
+  .title { flex: 1; min-width: 0; font-size: 15px; color: var(--ink); word-break: break-word; }
+  .title-edit {
+    flex: 1; font: inherit; font-size: 15px; padding: 6px 8px; color: var(--ink);
+    background: var(--bg); border: 1px solid var(--accent); border-radius: 8px;
+  }
+  .rowactions { display: flex; gap: 2px; flex: none; }
+  .iconbtn {
+    width: 32px; height: 32px; display: grid; place-items: center; border-radius: 8px;
+    border: none; background: transparent; color: var(--faint);
+  }
+  .iconbtn:hover { background: var(--surface-2); color: var(--ink); }
+  .iconbtn.danger:hover { background: var(--danger-soft); color: var(--danger); }
+  .iconbtn svg { width: 17px; height: 17px; }
+
+  /* States: empty / loading / error / banner */
+  .panel {
+    text-align: center; padding: 54px 24px; background: var(--surface);
+    border: 1px dashed var(--border); border-radius: var(--r); color: var(--muted);
+  }
+  .panel .emoji { font-size: 34px; }
+  .panel h2 { font-size: 17px; color: var(--ink); margin: 12px 0 4px; }
+  .panel p { margin: 0 0 18px; font-size: 14px; }
+  .panel.error { border-style: solid; border-color: color-mix(in srgb, var(--danger) 35%, var(--border)); }
+
+  .skeleton { display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); }
+  .sk { background: linear-gradient(90deg, var(--surface-2), var(--bg), var(--surface-2));
+    background-size: 200% 100%; animation: shimmer 1.3s infinite; border-radius: 6px; height: 14px; }
+  .sk.chip { width: 66px; height: 24px; border-radius: 999px; flex: none; }
+  .sk.line { flex: 1; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+
+  .banner {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin-bottom: 14px;
+    background: var(--doing-soft); border: 1px solid color-mix(in srgb, var(--doing) 40%, transparent);
+    border-radius: var(--r); color: var(--doing); font-size: 14px;
+  }
+  .banner strong { color: var(--ink); }
+  .banner button {
+    margin-left: auto; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 8px;
+    border: 1px solid currentColor; background: transparent; color: var(--doing);
+  }
+
+  .footer { margin-top: 16px; font-size: 12.5px; color: var(--faint); text-align: center;
+    font-variant-numeric: tabular-nums; }
+
+  /* Sign-in view */
+  .signin { max-width: 380px; margin: 8vh auto 0; text-align: center; }
+  .signin .logo { font-size: 30px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 6px; }
+  .signin .logo b { color: var(--accent); }
+  .signin p { color: var(--muted); margin: 0 0 26px; }
+  .signin .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 26px 24px; box-shadow: var(--shadow); text-align: left; }
+  .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .field label { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .field input { font-size: 15px; padding: 11px 13px; color: var(--ink); background: var(--bg);
+    border: 1px solid var(--border); border-radius: 10px; }
+  .field input:focus-visible { border-color: var(--accent); outline-offset: 0; }
+  .signin .btn-primary { width: 100%; justify-content: center; padding: 13px; }
+  .signin .hint { font-size: 12px; color: var(--faint); margin: 14px 0 0; text-align: center; }
+
+  /* Toast */
+  .toast-wrap { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%);
+    z-index: 40; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .toast { display: flex; align-items: center; gap: 14px; padding: 11px 14px;
+    background: var(--ink); color: var(--bg); border-radius: 10px; box-shadow: var(--shadow);
+    font-size: 14px; animation: rise .18s ease-out; }
+  .toast button { background: transparent; border: none; color: var(--accent);
+    font-weight: 700; padding: 0; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+
+  /* Prototype state bar — deliberately NOT part of the design being reviewed */
+  .protobar {
+    position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 50;
+    display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 999px;
+    background: #0b0d13; color: #cbd2e0; border: 1px solid #2a3040;
+    box-shadow: 0 8px 30px rgba(0,0,0,.4); max-width: calc(100vw - 24px); flex-wrap: wrap; justify-content: center;
+  }
+  .protobar .lbl { font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    color: #6b7386; padding: 0 8px; }
+  .protobar button {
+    font-size: 12.5px; padding: 6px 11px; border-radius: 999px; border: none;
+    background: transparent; color: #cbd2e0;
+  }
+  .protobar button:hover { background: #1c2130; color: #fff; }
+  .protobar button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+
+  @media (max-width: 520px) {
+    .task { flex-wrap: wrap; }
+    .title { order: 3; flex-basis: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+
+<div id="root"></div>
+<div class="toast-wrap" id="toasts" aria-live="polite" aria-atomic="true"></div>
+
+<nav class="protobar" aria-label="Prototype state switcher">
+  <span class="lbl">State</span>
+  <button data-state="signin">Sign-in</button>
+  <button data-state="loading">Loading</button>
+  <button data-state="empty">Empty</button>
+  <button data-state="list" aria-pressed="true">List</button>
+  <button data-state="error">Error</button>
+  <button data-state="expired">401 expired</button>
+</nav>
+
+<script>
+  // ---- PROTOTYPE state (in memory only) ----
+  const STATUSES = ['todo', 'doing', 'done'];
+  const LABEL = { todo: 'To do', doing: 'Doing', done: 'Done' };
+  const seed = () => ([
+    { id: 't1', title: 'Draft the Phase 3 UI review notes', status: 'doing' },
+    { id: 't2', title: 'Wire AuthService to Cognito (amplify signIn)', status: 'todo' },
+    { id: 't3', title: 'Add empty + error states to the task list', status: 'todo' },
+    { id: 't4', title: 'Deploy dev stack and smoke-test /tasks', status: 'done' },
+  ]);
+  let s = { view: 'list', tasks: seed(), filter: 'all', editingId: null, expired: false };
+  let uid = 100;
+
+  const ICONS = {
+    edit: '<path d="M4 20h4L18.5 9.5a2.12 2.12 0 0 0-3-3L5 17v3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+    trash: '<path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m1 0v13a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+    logout: '<path d="M15 12H4m0 0 4-4m-4 4 4 4M13 4h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
+    check: '<path d="M5 12l5 5L20 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  };
+  const svg = (p) => `<svg viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
+  const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  const root = document.getElementById('root');
+
+  function render() {
+    if (s.view === 'signin') return renderSignin();
+    if (s.view === 'loading') return renderShell(renderLoading());
+    if (s.view === 'error') return renderShell(renderError());
+    return renderShell(renderApp());
+  }
+
+  function renderSignin() {
+    root.innerHTML = `
+      <div class="shell">
+        <div class="signin">
+          <div class="logo">Task<b>ly</b></div>
+          <p>Sign in to manage your tasks.</p>
+          <form class="card" id="signinForm">
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" type="email" value="demo@taskly.app" autocomplete="username" />
+            </div>
+            <div class="field">
+              <label for="pw">Password</label>
+              <input id="pw" type="password" value="Taskly#Demo123" autocomplete="current-password" />
+            </div>
+            <button class="btn-primary" type="submit">Sign in</button>
+            <p class="hint">Prototype — any credentials work.</p>
+          </form>
+        </div>
+      </div>`;
+    document.getElementById('signinForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      s = { view: 'list', tasks: seed(), filter: 'all', editingId: null, expired: false };
+      sync('list'); render();
+    });
+  }
+
+  function renderShell(inner) {
+    root.innerHTML = `
+      <div class="shell">
+        <header class="appbar">
+          <div class="brand"><span class="logo">Task<b>ly</b></span><span class="tag">tasks</span></div>
+          <div class="userchip">
+            <span class="avatar">D</span>
+            <span>demo@taskly.app</span>
+            <button id="signout" title="Sign out" aria-label="Sign out">${svg(ICONS.logout)}</button>
+          </div>
+        </header>
+        <main id="main">${inner}</main>
+      </div>`;
+    const so = document.getElementById('signout');
+    if (so) so.addEventListener('click', () => { s.view = 'signin'; sync('signin'); render(); });
+    bindMain();
+  }
+
+  function renderLoading() {
+    const row = () => `<li class="skeleton"><span class="sk chip"></span><span class="sk line"></span></li>`;
+    return `<ul class="tasks" aria-hidden="true">${row() + row() + row()}</ul>
+            <p class="footer">Loading your tasks…</p>`;
+  }
+
+  function renderError() {
+    return `<div class="panel error">
+        <div class="emoji">⚠️</div>
+        <h2>Couldn't load your tasks</h2>
+        <p>Something went wrong reaching the server. Check your connection and try again.</p>
+        <button class="btn-primary" id="retry">Try again</button>
+      </div>`;
+  }
+
+  function renderApp() {
+    const counts = { all: s.tasks.length };
+    STATUSES.forEach((st) => (counts[st] = s.tasks.filter((t) => t.status === st).length));
+    const tabs = ['all', ...STATUSES].map((f) => `
+      <button data-filter="${f}" aria-pressed="${s.filter === f}">
+        ${f === 'all' ? 'All' : LABEL[f]} <span class="count">${counts[f]}</span>
+      </button>`).join('');
+
+    const banner = s.expired ? `
+      <div class="banner" role="alert">
+        <span><strong>Your session expired.</strong> Please sign in again to continue.</span>
+        <button id="relogin">Sign in</button>
+      </div>` : '';
+
+    const visible = s.filter === 'all' ? s.tasks : s.tasks.filter((t) => t.status === s.filter);
+
+    let body;
+    if (s.tasks.length === 0) {
+      body = `<div class="panel">
+          <div class="emoji">🗒️</div>
+          <h2>No tasks yet</h2>
+          <p>Add your first task above to get started.</p>
+        </div>`;
+    } else if (visible.length === 0) {
+      body = `<div class="panel"><div class="emoji">🔍</div><h2>Nothing in “${LABEL[s.filter]}”</h2>
+          <p>Switch filters or add a new task.</p></div>`;
+    } else {
+      body = `<ul class="tasks">${visible.map(renderTask).join('')}</ul>`;
+    }
+
+    const remaining = counts.todo + counts.doing;
+    return `
+      ${banner}
+      <form class="addform" id="addform">
+        <input id="newtitle" type="text" placeholder="Add a task and press Enter…" aria-label="New task title" autocomplete="off" ${s.expired ? 'disabled' : ''} />
+        <button class="btn-primary" type="submit" ${s.expired ? 'disabled' : ''}>Add task</button>
+      </form>
+      <div class="filters" role="group" aria-label="Filter tasks">${tabs}</div>
+      ${body}
+      <p class="footer">${remaining} open · ${counts.done} done · ${counts.all} total</p>`;
+  }
+
+  function renderTask(t) {
+    if (s.editingId === t.id) {
+      return `<li class="task ${t.status}" data-id="${t.id}">
+          <button class="status ${t.status}" disabled><span class="dot"></span>${LABEL[t.status]}</button>
+          <input class="title-edit" value="${esc(t.title)}" aria-label="Edit task title" />
+        </li>`;
+    }
+    return `<li class="task ${t.status}" data-id="${t.id}">
+        <button class="status ${t.status}" data-act="cycle" aria-label="Status: ${LABEL[t.status]}. Click to advance.">
+          <span class="dot"></span>${LABEL[t.status]}
+        </button>
+        <span class="title" data-act="edit" title="Click to edit">${esc(t.title)}</span>
+        <div class="rowactions">
+          <button class="iconbtn" data-act="edit" aria-label="Edit task">${svg(ICONS.edit)}</button>
+          <button class="iconbtn danger" data-act="delete" aria-label="Delete task">${svg(ICONS.trash)}</button>
+        </div>
+      </li>`;
+  }
+
+  // ---- interactions ----
+  function bindMain() {
+    const main = document.getElementById('main');
+    if (!main) return;
+
+    const addForm = document.getElementById('addform');
+    if (addForm) addForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('newtitle');
+      const title = input.value.trim();
+      if (!title) { input.focus(); return; }
+      s.tasks.unshift({ id: 't' + ++uid, title, status: 'todo' });
+      render();
+      document.getElementById('newtitle').focus();
+    });
+
+    main.querySelectorAll('[data-filter]').forEach((b) =>
+      b.addEventListener('click', () => { s.filter = b.dataset.filter; render(); }));
+
+    const retry = document.getElementById('retry');
+    if (retry) retry.addEventListener('click', () => { s.view = 'loading'; sync('loading'); render();
+      setTimeout(() => { s.view = 'list'; sync('list'); render(); }, 900); });
+
+    const relogin = document.getElementById('relogin');
+    if (relogin) relogin.addEventListener('click', () => { s.view = 'signin'; sync('signin'); render(); });
+
+    main.querySelectorAll('.task').forEach((li) => {
+      const id = li.dataset.id;
+      li.querySelectorAll('[data-act]').forEach((el) => el.addEventListener('click', () => {
+        const act = el.dataset.act;
+        if (act === 'cycle') cycleStatus(id);
+        else if (act === 'edit') startEdit(id);
+        else if (act === 'delete') removeTask(id);
+      }));
+      const editInput = li.querySelector('.title-edit');
+      if (editInput) {
+        editInput.focus(); editInput.setSelectionRange(editInput.value.length, editInput.value.length);
+        editInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') { e.preventDefault(); commitEdit(id, editInput.value); }
+          if (e.key === 'Escape') { s.editingId = null; render(); }
+        });
+        editInput.addEventListener('blur', () => commitEdit(id, editInput.value));
+      }
+    });
+  }
+
+  function cycleStatus(id) {
+    const t = s.tasks.find((x) => x.id === id); if (!t) return;
+    t.status = STATUSES[(STATUSES.indexOf(t.status) + 1) % STATUSES.length];
+    render();
+  }
+  function startEdit(id) { s.editingId = id; render(); }
+  function commitEdit(id, value) {
+    const t = s.tasks.find((x) => x.id === id); if (!t) return;
+    const v = value.trim(); if (v) t.title = v;
+    s.editingId = null; render();
+  }
+  function removeTask(id) {
+    const idx = s.tasks.findIndex((x) => x.id === id); if (idx < 0) return;
+    const [removed] = s.tasks.splice(idx, 1);
+    render();
+    toast(`Deleted “${trunc(removed.title)}”`, () => { s.tasks.splice(idx, 0, removed); render(); });
+  }
+  const trunc = (t) => (t.length > 32 ? t.slice(0, 32) + '…' : t);
+
+  // ---- toast with undo ----
+  let toastTimer;
+  function toast(msg, onUndo) {
+    const wrap = document.getElementById('toasts');
+    wrap.innerHTML = '';
+    const el = document.createElement('div');
+    el.className = 'toast';
+    el.innerHTML = `<span>${esc(msg)}</span>`;
+    const btn = document.createElement('button');
+    btn.textContent = 'Undo';
+    btn.addEventListener('click', () => { clearTimeout(toastTimer); wrap.innerHTML = ''; onUndo(); });
+    el.appendChild(btn);
+    wrap.appendChild(el);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => (wrap.innerHTML = ''), 4200);
+  }
+
+  // ---- prototype state bar ----
+  const bar = document.querySelector('.protobar');
+  function sync(state) {
+    bar.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.state === state)));
+  }
+  bar.addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    const st = b.dataset.state;
+    if (st === 'signin') s.view = 'signin';
+    else if (st === 'loading') s.view = 'loading';
+    else if (st === 'empty') { s = { view: 'list', tasks: [], filter: 'all', editingId: null, expired: false }; }
+    else if (st === 'list') { s = { view: 'list', tasks: seed(), filter: 'all', editingId: null, expired: false }; }
+    else if (st === 'error') s.view = 'error';
+    else if (st === 'expired') { s = { view: 'list', tasks: seed(), filter: 'all', editingId: null, expired: true }; }
+    sync(st); render();
+  });
+
+  render();
+</script>

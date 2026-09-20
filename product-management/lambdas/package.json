@@ -1,0 +1,30 @@
+{
+  "name": "product-management-lambdas",
+  "version": "0.1.0",
+  "description": "product-management Lambda runtime code (Node 22, TypeScript). Bundled into functions by the CDK app.",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "aws:up": "docker compose up -d",
+    "aws:down": "docker compose down",
+    "dev": "tsx local/server.ts",
+    "worker": "tsx local/worker.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.864.0",
+    "@aws-sdk/lib-dynamodb": "^3.864.0",
+    "@aws-sdk/client-s3": "^3.864.0",
+    "@aws-sdk/client-sqs": "^3.864.0",
+    "@aws-sdk/client-secrets-manager": "^3.864.0",
+    "uuid": "^11.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.163",
+    "@types/node": "^24.10.1",
+    "@types/uuid": "^10.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "~5.9.3",
+    "vitest": "^5.0.0"
+  }
+}

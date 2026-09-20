@@ -1,0 +1,24 @@
+{
+  "name": "taskly-lambdas",
+  "version": "0.1.0",
+  "description": "Taskly Lambda runtime code (Node 22, TypeScript). Bundled into functions by the CDK app.",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "dev": "tsx local/server.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.864.0",
+    "@aws-sdk/util-dynamodb": "^3.864.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.163",
+    "@types/node": "^24.10.1",
+    "tsx": "^4.19.0",
+    "typescript": "~5.9.3",
+    "vitest": "^5.0.0"
+  }
+}

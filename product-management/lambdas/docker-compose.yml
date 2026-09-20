@@ -1,0 +1,18 @@
+# Local AWS emulation for offline dev/debug. No real AWS involved.
+#   npm run aws:up    -> start LocalStack (SQS + Secrets Manager + S3 + DynamoDB)
+#   npm run aws:down  -> stop
+#
+# The dev server / worker point the AWS SDK v3 at this endpoint via AWS_ENDPOINT_URL,
+# so production handler code runs unchanged.
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: product-management-localstack
+    ports:
+      - '4566:4566'
+    environment:
+      SERVICES: sqs,secretsmanager,s3,dynamodb
+      DEBUG: '0'
+      AWS_DEFAULT_REGION: us-west-1
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'

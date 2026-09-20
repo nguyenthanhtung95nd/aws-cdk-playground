@@ -1,0 +1,27 @@
+{
+  "name": "taskly",
+  "version": "0.1.0",
+  "bin": {
+    "taskly": "bin/taskly.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "watch": "tsc -w",
+    "test": "vitest run && npm --prefix lambdas run test",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "aws-cdk": "^2.1140.0",
+    "esbuild": "^0.28.2",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.9.3",
+    "vitest": "^5.0.0"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.244.0",
+    "cdk-nag": "^2.38.2",
+    "constructs": "^10.5.0"
+  }
+}

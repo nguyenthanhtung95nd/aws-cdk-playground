@@ -1,0 +1,91 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "aws:up",
+      "type": "shell",
+      "command": "docker compose up -d",
+      "options": { "cwd": "${workspaceFolder}/lambdas" },
+      "problemMatcher": []
+    },
+    {
+      "label": "aws:down",
+      "type": "shell",
+      "command": "docker compose down",
+      "options": { "cwd": "${workspaceFolder}/lambdas" },
+      "problemMatcher": []
+    },
+    {
+      "label": "fe:dev:mock",
+      "type": "npm",
+      "script": "dev:mock",
+      "path": "frontend/",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "VITE",
+          "endsPattern": "ready in"
+        }
+      }
+    },
+    {
+      "label": "fe:dev:local",
+      "type": "npm",
+      "script": "dev:local",
+      "path": "frontend/",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "VITE",
+          "endsPattern": "ready in"
+        }
+      }
+    },
+    {
+      "label": "test: all (infra + lambdas)",
+      "type": "npm",
+      "script": "test",
+      "path": "",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "test: lambdas",
+      "type": "npm",
+      "script": "test",
+      "path": "lambdas/",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "test: frontend",
+      "type": "npm",
+      "script": "test",
+      "path": "frontend/",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "test:e2e: frontend",
+      "type": "npm",
+      "script": "test:e2e",
+      "path": "frontend/",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "verify: frontend",
+      "type": "npm",
+      "script": "verify",
+      "path": "frontend/",
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

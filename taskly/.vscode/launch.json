@@ -1,0 +1,39 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Backend: local API (debug)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/lambdas",
+      "program": "${workspaceFolder}/lambdas/node_modules/tsx/dist/cli.mjs",
+      "args": ["local/server.ts"],
+      "console": "integratedTerminal",
+      "preLaunchTask": "db:up",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Frontend: mock (debug)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/frontend",
+      "preLaunchTask": "fe:dev:mock"
+    },
+    {
+      "name": "Frontend: local backend (debug)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/frontend",
+      "preLaunchTask": "fe:dev:local"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full-stack local (debug)",
+      "configurations": ["Backend: local API (debug)", "Frontend: local backend (debug)"],
+      "stopAll": true
+    }
+  ]
+}
