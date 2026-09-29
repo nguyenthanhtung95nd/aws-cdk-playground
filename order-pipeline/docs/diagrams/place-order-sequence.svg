@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="place-order-seq-title place-order-seq-desc">
+      <title id="place-order-seq-title">Place order, happy path</title>
+      <desc id="place-order-seq-desc">Sequence diagram: the browser posts an order, the place-order Lambda writes it as PENDING and answers 201, then the DynamoDB stream wakes the dispatcher which marks it PROCESSING and queues it, and the worker reads it back and marks it COMPLETED.</desc>
+      <defs><style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
+        <marker id="seq-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
+        <marker id="seq-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
+        <marker id="seq-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2e5aa8"/></marker>
+        <marker id="seq-arrow-open" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polyline points="0 0, 8 3, 0 6" fill="none" stroke="#4f5d75" stroke-width="1.2"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+
+      <!-- Lifelines: x = 104, 296, 488, 680, 872 -->
+      <line x1="104" y1="128" x2="104" y2="520" stroke="#2d3142" stroke-opacity="0.22" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="296" y1="128" x2="296" y2="520" stroke="#2d3142" stroke-opacity="0.22" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="488" y1="128" x2="488" y2="520" stroke="#2d3142" stroke-opacity="0.22" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="680" y1="128" x2="680" y2="520" stroke="#2d3142" stroke-opacity="0.22" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="872" y1="128" x2="872" y2="520" stroke="#2d3142" stroke-opacity="0.22" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- Activation bars -->
+      <rect x="292" y="172" width="8" height="120" fill="#2d3142" fill-opacity="0.06" stroke="#4f5d75" stroke-width="0.8"/>
+      <rect x="676" y="332" width="8" height="80" fill="#2d3142" fill-opacity="0.06" stroke="#4f5d75" stroke-width="0.8"/>
+      <rect x="868" y="412" width="8" height="80" fill="#2d3142" fill-opacity="0.06" stroke="#4f5d75" stroke-width="0.8"/>
+
+      <!-- Messages, top to bottom -->
+      <line x1="104" y1="168" x2="292" y2="168" stroke="#2e5aa8" stroke-width="1.2" marker-end="url(#seq-arrow-link)"/>
+      <line x1="300" y1="208" x2="488" y2="208" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#seq-arrow)"/>
+      <line x1="488" y1="248" x2="300" y2="248" stroke="#4f5d75" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#seq-arrow)"/>
+      <line x1="292" y1="288" x2="104" y2="288" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#seq-arrow-accent)"/>
+      <line x1="488" y1="328" x2="676" y2="328" stroke="#4f5d75" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#seq-arrow-open)"/>
+      <line x1="676" y1="368" x2="488" y2="368" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#seq-arrow)"/>
+      <line x1="684" y1="408" x2="868" y2="408" stroke="#4f5d75" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#seq-arrow-open)"/>
+      <line x1="868" y1="448" x2="488" y2="448" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#seq-arrow)"/>
+      <line x1="868" y1="488" x2="488" y2="488" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#seq-arrow)"/>
+
+      <!-- Labels -->
+      <rect x="160" y="152" width="80" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="200" y="161" fill="#2e5aa8" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">POST /ORDERS</text>
+
+      <rect x="344" y="192" width="96" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="392" y="201" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PUTITEM · COND</text>
+
+      <rect x="376" y="232" width="32" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="392" y="241" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">OK</text>
+
+      <rect x="156" y="272" width="88" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="200" y="281" fill="#eb6c36" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">201 · PENDING</text>
+
+      <rect x="540" y="312" width="88" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="584" y="321" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">STREAM INSERT</text>
+
+      <rect x="536" y="352" width="96" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="584" y="361" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SET PROCESSING</text>
+
+      <rect x="732" y="392" width="88" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="776" y="401" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SQS WORK · ID</text>
+
+      <rect x="748" y="432" width="56" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="776" y="441" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">GETITEM</text>
+
+      <rect x="732" y="472" width="88" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="776" y="481" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SET COMPLETED</text>
+
+      <!-- Actors -->
+      <rect x="40" y="72" width="128" height="56" rx="6" fill="#f5f5f5"/>
+      <rect x="40" y="72" width="128" height="56" rx="6" fill="#4f5d75" fill-opacity="0.10" stroke="#7a8399" stroke-width="1"/>
+      <rect x="48" y="80" width="32" height="12" rx="2" fill="none" stroke="#7a8399" stroke-opacity="0.40" stroke-width="0.8"/>
+      <text x="64" y="89" fill="#7a8399" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">USER</text>
+      <text x="104" y="104" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Browser</text>
+      <text x="104" y="119" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">form + poll</text>
+
+      <rect x="224" y="72" width="144" height="56" rx="6" fill="#f5f5f5"/>
+      <rect x="224" y="72" width="144" height="56" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="232" y="80" width="28" height="12" rx="2" fill="none" stroke="#2d3142" stroke-opacity="0.40" stroke-width="0.8"/>
+      <text x="246" y="89" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FN</text>
+      <text x="296" y="104" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">place-order</text>
+      <text x="296" y="119" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">via API Gateway</text>
+
+      <rect x="416" y="72" width="144" height="56" rx="6" fill="#f5f5f5"/>
+      <rect x="416" y="72" width="144" height="56" rx="6" fill="#eb6c36" fill-opacity="0.08" stroke="#eb6c36" stroke-width="1"/>
+      <rect x="424" y="80" width="36" height="12" rx="2" fill="none" stroke="#eb6c36" stroke-opacity="0.50" stroke-width="0.8"/>
+      <text x="442" y="89" fill="#eb6c36" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">STORE</text>
+      <text x="488" y="104" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">DynamoDB</text>
+      <text x="488" y="119" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">orders + stream</text>
+
+      <rect x="608" y="72" width="144" height="56" rx="6" fill="#f5f5f5"/>
+      <rect x="608" y="72" width="144" height="56" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="616" y="80" width="28" height="12" rx="2" fill="none" stroke="#2d3142" stroke-opacity="0.40" stroke-width="0.8"/>
+      <text x="630" y="89" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FN</text>
+      <text x="680" y="104" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Dispatcher</text>
+      <text x="680" y="119" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">stream trigger</text>
+
+      <rect x="808" y="72" width="128" height="56" rx="6" fill="#f5f5f5"/>
+      <rect x="808" y="72" width="128" height="56" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="816" y="80" width="28" height="12" rx="2" fill="none" stroke="#2d3142" stroke-opacity="0.40" stroke-width="0.8"/>
+      <text x="830" y="89" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FN</text>
+      <text x="872" y="104" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Worker</text>
+      <text x="872" y="119" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">SQS trigger</text>
+
+      <!-- Legend -->
+      <line x1="40" y1="536" x2="936" y2="536" stroke="#2d3142" stroke-opacity="0.10" stroke-width="0.8"/>
+      <text x="40" y="552" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+      <line x1="40" y1="578" x2="68" y2="578" stroke="#2e5aa8" stroke-width="1.2" marker-end="url(#seq-arrow-link)"/>
+      <text x="76" y="580" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">HTTP request</text>
+
+      <line x1="200" y1="578" x2="228" y2="578" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#seq-arrow-accent)"/>
+      <text x="236" y="580" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">The only reply the user waits for</text>
+
+      <line x1="440" y1="578" x2="468" y2="578" stroke="#4f5d75" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#seq-arrow)"/>
+      <text x="476" y="580" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Return</text>
+
+      <line x1="560" y1="578" x2="588" y2="578" stroke="#4f5d75" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#seq-arrow-open)"/>
+      <text x="596" y="580" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Async event (stream / queue)</text>
+
+      <rect x="780" y="570" width="4" height="18" fill="#2d3142" fill-opacity="0.06" stroke="#4f5d75" stroke-width="0.8"/>
+      <text x="792" y="580" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Lambda running</text>
+    </svg>

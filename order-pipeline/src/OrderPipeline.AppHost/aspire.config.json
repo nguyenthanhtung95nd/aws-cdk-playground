@@ -1,0 +1,5 @@
+{
+  "appHost": {
+    "path": "OrderPipeline.AppHost.csproj"
+  }
+}

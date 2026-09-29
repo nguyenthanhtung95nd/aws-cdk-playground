@@ -1,0 +1,230 @@
+:root {
+  --surface-page: #0f172a;
+  --surface-raised: #1e293b;
+  --surface-muted: #334155;
+
+  --text-primary: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-on-accent: #0f172a;
+
+  --border-subtle: #334155;
+  --border-input: #475569;
+
+  --accent: #38bdf8;
+
+  --danger-border: #b91c1c;
+  --danger-text: #fca5a5;
+
+  --status-completed-bg: #14532d;
+  --status-completed-text: #bbf7d0;
+  --status-failed-bg: #7f1d1d;
+  --status-failed-text: #fecaca;
+  --status-processing-bg: #1e3a8a;
+  --status-processing-text: #bfdbfe;
+
+  --tag-bg: #7c2d12;
+  --tag-text: #fed7aa;
+
+  --banner-bg: #78350f;
+  --banner-text: #fed7aa;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 32px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-pill: 999px;
+
+  --field-max: 26rem;
+
+  color-scheme: dark;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: var(--surface-page);
+  color: var(--text-primary);
+}
+
+body {
+  margin: 0;
+  padding: var(--space-6) var(--space-4);
+}
+
+main {
+  max-width: 55rem;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 1.6rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.place-order {
+  display: grid;
+  gap: var(--space-2);
+  background: var(--surface-raised);
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+}
+
+.place-order label {
+  font-size: 0.9rem;
+}
+
+.place-order input {
+  width: 100%;
+  max-width: var(--field-max);
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-input);
+  background: var(--surface-page);
+  color: inherit;
+}
+
+.place-order button {
+  justify-self: start;
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.place-order button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.field-error,
+.failure {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--danger-text);
+}
+
+@media (min-width: 40rem) {
+  .place-order {
+    grid-template-columns: 8rem 1fr;
+    align-items: start;
+    gap: var(--space-3);
+  }
+
+  .place-order label {
+    padding-top: 9px;
+  }
+
+  .place-order button,
+  .failure {
+    grid-column: 2;
+  }
+}
+
+.summary {
+  margin: 0 0 var(--space-3);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.orders-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.orders {
+  width: 100%;
+  min-width: 22rem;
+  border-collapse: collapse;
+}
+
+.orders caption {
+  text-align: left;
+  padding-bottom: var(--space-2);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.orders th,
+.orders td {
+  text-align: left;
+  padding: 9px var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.orders th.amount,
+.orders td.amount {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.tag {
+  display: inline-block;
+  white-space: nowrap;
+  margin-left: var(--space-2);
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  font-size: 0.7rem;
+}
+
+.status {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  background: var(--surface-muted);
+}
+
+.status-completed {
+  background: var(--status-completed-bg);
+  color: var(--status-completed-text);
+}
+
+.status-failed {
+  background: var(--status-failed-bg);
+  color: var(--status-failed-text);
+}
+
+.status-processing {
+  background: var(--status-processing-bg);
+  color: var(--status-processing-text);
+}
+
+.state {
+  padding: var(--space-5);
+  border: 1px dashed var(--border-input);
+  border-radius: var(--radius-md);
+}
+
+.state-title {
+  font-weight: 600;
+  margin-top: 0;
+}
+
+.state-error {
+  border-color: var(--danger-border);
+}
+
+.banner {
+  padding: 9px var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--banner-bg);
+  color: var(--banner-text);
+}

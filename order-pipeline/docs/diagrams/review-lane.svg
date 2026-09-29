@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="review-lane-title review-lane-desc">
+      <title id="review-lane-title">One stream, two readers</title>
+      <desc id="review-lane-desc">Architecture diagram: the DynamoDB stream is read by both the dispatcher, which queues every order for the worker, and an EventBridge Pipe, which copies only high-value orders into a review queue read by a reviewer that has no write access.</desc>
+      <defs><style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
+        <marker id="rl-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
+        <marker id="rl-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+
+      <!-- Zones -->
+      <rect x="248" y="104" width="520" height="120" rx="8" fill="#2d3142" fill-opacity="0.02" stroke="#2d3142" stroke-opacity="0.10" stroke-width="0.8"/>
+      <rect x="440" y="108" width="128" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="504" y="117" fill="#2d3142" fill-opacity="0.40" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">WORK LANE · SETTLES</text>
+
+      <rect x="248" y="328" width="520" height="120" rx="8" fill="#2d3142" fill-opacity="0.02" stroke="#2d3142" stroke-opacity="0.10" stroke-width="0.8"/>
+      <rect x="608" y="332" width="136" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="676" y="341" fill="#2d3142" fill-opacity="0.40" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">REVIEW LANE · OBSERVES</text>
+
+      <!-- Arrows -->
+      <!-- DynamoDB -> Dispatcher (every insert) -->
+      <path d="M 184,264 H 216 Q 224,264 224,256 V 176 Q 224,168 232,168 H 264" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#rl-arrow)"/>
+      <!-- DynamoDB -> Pipe (filtered, accent) -->
+      <path d="M 184,296 H 216 Q 224,296 224,304 V 384 Q 224,392 232,392 H 264" fill="none" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#rl-arrow-accent)"/>
+      <!-- Dispatcher -> work -->
+      <line x1="400" y1="168" x2="448" y2="168" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#rl-arrow)"/>
+      <!-- work -> Worker -->
+      <line x1="568" y1="168" x2="616" y2="168" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#rl-arrow)"/>
+      <!-- Pipe -> review -->
+      <line x1="400" y1="392" x2="448" y2="392" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#rl-arrow)"/>
+      <!-- review -> Reviewer -->
+      <line x1="568" y1="392" x2="616" y2="392" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#rl-arrow)"/>
+      <!-- Worker -> DynamoDB (update status), routed above the work lane -->
+      <path d="M 684,136 V 88 Q 684,80 676,80 H 120 Q 112,80 112,88 V 248" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#rl-arrow)"/>
+
+      <!-- Labels -->
+      <rect x="232" y="210" width="80" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="272" y="219" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">EVERY INSERT</text>
+
+      <rect x="232" y="334" width="92" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="278" y="343" fill="#eb6c36" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">VALUETIER=HIGH</text>
+
+      <rect x="356" y="60" width="88" height="12" rx="2" fill="#f5f5f5"/>
+      <text x="400" y="69" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">UPDATE STATUS</text>
+
+      <!-- Node: DynamoDB orders -->
+      <rect x="40" y="248" width="144" height="64" rx="6" fill="#f5f5f5"/>
+      <rect x="40" y="248" width="144" height="64" rx="6" fill="#2d3142" fill-opacity="0.05" stroke="#4f5d75" stroke-width="1"/>
+      <rect x="48" y="256" width="36" height="12" rx="2" fill="none" stroke="#4f5d75" stroke-opacity="0.50" stroke-width="0.8"/>
+      <text x="66" y="265" fill="#4f5d75" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">STORE</text>
+      <text x="112" y="286" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">DynamoDB orders</text>
+      <text x="112" y="301" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">stream: new + old</text>
+
+      <!-- Node: Dispatcher -->
+      <rect x="264" y="136" width="136" height="64" rx="6" fill="#f5f5f5"/>
+      <rect x="264" y="136" width="136" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="272" y="144" width="28" height="12" rx="2" fill="none" stroke="#2d3142" stroke-opacity="0.40" stroke-width="0.8"/>
+      <text x="286" y="153" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FN</text>
+      <text x="332" y="174" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Dispatcher</text>
+      <text x="332" y="189" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">claims, then queues</text>
+
+      <!-- Node: SQS work -->
+      <rect x="448" y="136" width="120" height="64" rx="6" fill="#f5f5f5"/>
+      <rect x="448" y="136" width="120" height="64" rx="6" fill="#2d3142" fill-opacity="0.05" stroke="#4f5d75" stroke-width="1"/>
+      <rect x="456" y="144" width="28" height="12" rx="2" fill="none" stroke="#4f5d75" stroke-opacity="0.50" stroke-width="0.8"/>
+      <text x="470" y="153" fill="#4f5d75" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SQS</text>
+      <text x="508" y="174" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">work</text>
+      <text x="508" y="189" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">body = orderId</text>
+
+      <!-- Node: Worker -->
+      <rect x="616" y="136" width="136" height="64" rx="6" fill="#f5f5f5"/>
+      <rect x="616" y="136" width="136" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="624" y="144" width="28" height="12" rx="2" fill="none" stroke="#2d3142" stroke-opacity="0.40" stroke-width="0.8"/>
+      <text x="638" y="153" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FN</text>
+      <text x="684" y="174" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Worker</text>
+      <text x="684" y="189" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">COMPLETED / FAILED</text>
+
+      <!-- Node: Pipe (focal) -->
+      <rect x="264" y="360" width="136" height="64" rx="6" fill="#f5f5f5"/>
+      <rect x="264" y="360" width="136" height="64" rx="6" fill="#eb6c36" fill-opacity="0.08" stroke="#eb6c36" stroke-width="1"/>
+      <rect x="272" y="368" width="32" height="12" rx="2" fill="none" stroke="#eb6c36" stroke-opacity="0.50" stroke-width="0.8"/>
+      <text x="288" y="377" fill="#eb6c36" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PIPE</text>
+      <text x="332" y="398" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">EventBridge Pipe</text>
+      <text x="332" y="413" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">filter · no code</text>
+
+      <!-- Node: SQS review -->
+      <rect x="448" y="360" width="120" height="64" rx="6" fill="#f5f5f5"/>
+      <rect x="448" y="360" width="120" height="64" rx="6" fill="#2d3142" fill-opacity="0.05" stroke="#4f5d75" stroke-width="1"/>
+      <rect x="456" y="368" width="28" height="12" rx="2" fill="none" stroke="#4f5d75" stroke-opacity="0.50" stroke-width="0.8"/>
+      <text x="470" y="377" fill="#4f5d75" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SQS</text>
+      <text x="508" y="398" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">review</text>
+      <text x="508" y="413" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">body = orderId</text>
+
+      <!-- Node: Reviewer -->
+      <rect x="616" y="360" width="136" height="64" rx="6" fill="#f5f5f5"/>
+      <rect x="616" y="360" width="136" height="64" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <rect x="624" y="368" width="28" height="12" rx="2" fill="none" stroke="#2d3142" stroke-opacity="0.40" stroke-width="0.8"/>
+      <text x="638" y="377" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FN</text>
+      <text x="684" y="398" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Reviewer</text>
+      <text x="684" y="413" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">logs · no DynamoDB IAM</text>
+
+      <!-- Editorial aside -->
+      <text x="800" y="398" fill="#4f5d75" font-size="14" font-style="italic" font-family="'Instrument Serif', serif">no arrow back:</text>
+      <text x="800" y="416" fill="#4f5d75" font-size="14" font-style="italic" font-family="'Instrument Serif', serif">it cannot write</text>
+
+      <!-- Legend -->
+      <line x1="40" y1="536" x2="936" y2="536" stroke="#2d3142" stroke-opacity="0.10" stroke-width="0.8"/>
+      <text x="40" y="552" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+      <rect x="40" y="574" width="14" height="10" rx="2" fill="#eb6c36" fill-opacity="0.08" stroke="#eb6c36" stroke-width="1"/>
+      <text x="60" y="582" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Routing without code</text>
+
+      <rect x="220" y="574" width="14" height="10" rx="2" fill="#2d3142" fill-opacity="0.05" stroke="#4f5d75" stroke-width="1"/>
+      <text x="240" y="582" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Table / queue</text>
+
+      <rect x="360" y="574" width="14" height="10" rx="2" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <text x="380" y="582" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Lambda</text>
+
+      <line x1="480" y1="580" x2="508" y2="580" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#rl-arrow-accent)"/>
+      <text x="516" y="582" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Only HIGH_VALUE inserts</text>
+
+      <line x1="680" y1="580" x2="708" y2="580" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#rl-arrow)"/>
+      <text x="716" y="582" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Every insert / message</text>
+    </svg>

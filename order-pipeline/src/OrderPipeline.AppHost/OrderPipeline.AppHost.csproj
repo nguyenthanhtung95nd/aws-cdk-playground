@@ -1,0 +1,24 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.4.4">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>3a55ab0c-6bc6-41d6-b40d-15caaf1a518d</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AWS" Version="13.7.2" />
+    <PackageReference Include="Aspire.Hosting.JavaScript" Version="13.5.0" />
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="4.0.104" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrderPipeline.Functions\OrderPipeline.Functions.csproj" />
+    <!-- Libraries, not resources: without this the Aspire SDK would try to launch them. -->
+    <ProjectReference Include="..\OrderPipeline.Contracts\OrderPipeline.Contracts.csproj" IsAspireProjectResource="false" />
+    <ProjectReference Include="..\OrderPipeline.Infrastructure\OrderPipeline.Infrastructure.csproj" IsAspireProjectResource="false" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OrderPipeline.AppHost/OrderPipeline.AppHost.csproj" />
+    <Project Path="src/OrderPipeline.Contracts/OrderPipeline.Contracts.csproj" />
+    <Project Path="src/OrderPipeline.Domain/OrderPipeline.Domain.csproj" />
+    <Project Path="src/OrderPipeline.Functions/OrderPipeline.Functions.csproj" />
+    <Project Path="src/OrderPipeline.Infrastructure/OrderPipeline.Infrastructure.csproj" />
+    <Project Path="src/OrderPipeline.ServiceDefaults/OrderPipeline.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OrderPipeline.AppHost.Tests/OrderPipeline.AppHost.Tests.csproj" />
+    <Project Path="tests/OrderPipeline.Domain.Tests/OrderPipeline.Domain.Tests.csproj" />
+    <Project Path="tests/OrderPipeline.Functions.Tests/OrderPipeline.Functions.Tests.csproj" />
+    <Project Path="tests/OrderPipeline.Infrastructure.Tests/OrderPipeline.Infrastructure.Tests.csproj" />
+  </Folder>
+</Solution>

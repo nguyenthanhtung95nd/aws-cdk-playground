@@ -1,0 +1,10 @@
+{
+  "name": "order-pipeline",
+  "private": true,
+  "scripts": {
+    "verify": "npm --prefix frontend run verify && dotnet build --nologo && dotnet test --nologo",
+    "verify:frontend": "npm --prefix frontend run verify",
+    "verify:backend": "dotnet build --nologo && dotnet test --nologo",
+    "verify:aspire": "dotnet test tests/OrderPipeline.AppHost.Tests --nologo -e ORDER_PIPELINE_ASPIRE_TESTS=1"
+  }
+}

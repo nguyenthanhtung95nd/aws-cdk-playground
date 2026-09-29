@@ -1,0 +1,4 @@
+e2e/screenshots/
+playwright-report/
+test-results/
+!.env

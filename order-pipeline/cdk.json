@@ -1,0 +1,38 @@
+{
+  "app": "dotnet run --project src/OrderPipeline.Infrastructure/OrderPipeline.Infrastructure.csproj",
+  "output": "cdk.out",
+  "watch": {
+    "include": [
+      "src/**"
+    ],
+    "exclude": [
+      "**/bin",
+      "**/obj",
+      "cdk.out",
+      "tests"
+    ]
+  },
+  "context": {
+    "stages": {
+      "dev": {
+        "tagSystem": "orderpipeline",
+        "tagEnvironment": "dev",
+        "tagSystemApp": "orders",
+        "tagCustomerCode": "demo",
+        "region": "us-west-1",
+        "alertEmail": "",
+        "highValueThreshold": "10000",
+        "businessLimit": "50000"
+      }
+    },
+    "@aws-cdk/aws-iam:minimizePolicies": true,
+    "@aws-cdk/core:checkSecretUsage": true,
+    "@aws-cdk/core:explicitStackTags": true,
+    "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
+    "@aws-cdk/aws-lambda:useCdkManagedLogGroup": true,
+    "@aws-cdk/aws-s3:publicAccessBlockedByDefault": true,
+    "@aws-cdk/core:enablePartitionLiterals": true,
+    "@aws-cdk/aws-kms:aliasNameRef": true,
+    "@aws-cdk/core:validateSnapshotRemovalPolicy": true
+  }
+}
